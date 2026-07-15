@@ -28,22 +28,6 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
-    <!-- Background -->
-    <Color x:Key="Background">#F8F9FA</Color>
-
-    <!-- Cards -->
-    <Color x:Key="CardBackground">#FFFFFF</Color>
-
-    <!-- Text -->
-    <Color x:Key="TextPrimary">#1C1B1F</Color>
-    <Color x:Key="TextSecondary">#6C757D</Color>
-
-    <!-- Status -->
-    <Color x:Key="Success">#2E7D32</Color>
-    <Color x:Key="Warning">#F9A825</Color>
-    <Color x:Key="Danger">#C62828</Color>
-
-
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>

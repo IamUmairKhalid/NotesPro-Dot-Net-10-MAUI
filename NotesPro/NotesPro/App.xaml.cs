@@ -2,10 +2,17 @@
 
 public partial class App : Application
 {
-    public App(AppShell shell)
+    private readonly AppShell _appShell;
+
+    public App(AppShell appShell)
     {
         InitializeComponent();
 
-        Windows[0].Page = shell;
+        _appShell = appShell;
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(_appShell);
     }
 }
