@@ -7,6 +7,7 @@ using NotesPro.Services.Interfaces;
 using NotesPro.Data.Database;
 using NotesPro.Data.Repositories;
 using NotesPro.Data.Repositories.Interfaces;
+using NotesPro.Data.Seed;
 
 namespace NotesPro;
 
@@ -38,6 +39,8 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<INoteRepository, NoteRepository>();
         builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+        
+        builder.Services.AddSingleton<IDataSeeder, DatabaseSeeder>();
 
 #if DEBUG
         builder.Logging.AddDebug();
