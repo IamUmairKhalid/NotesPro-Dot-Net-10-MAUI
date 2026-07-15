@@ -65,4 +65,42 @@ public class NoteRepository : INoteRepository
 
         return await db.UpdateAsync(note);
     }
+
+    public async Task<int> GetTotalCountAsync()
+    {
+        var db = await _database.GetConnectionAsync();
+
+        return await db.Table<Note>()
+            .Where(x => !x.IsDeleted)
+            .CountAsync();
+    }
+
+    public async Task<int> GetFavoriteCountAsync()
+    {
+        var db = await _database.GetConnectionAsync();
+
+        return await db.Table<Note>()
+            .Where(x => x.IsFavorite && !x.IsDeleted)
+            .CountAsync();
+    }
+
+    public async Task<int> GetPinnedCountAsync()
+    {
+        var db = await _database.GetConnectionAsync();
+
+        return await db.Table<Note>()
+            .Where(x => x.IsPinned && !x.IsDeleted)
+            .CountAsync();
+    }
+
+    public async Task<List<Note>> GetRecentAsync(int count)
+    {
+        var db = await _database.GetConnectionAsync();
+
+        return await db.Table<Note>()
+            .Where(x => !x.IsDeleted)
+            .OrderByDescending(x => x.CreatedOn)
+            .Take(count)
+            .ToListAsync();
+    }
 }

@@ -10,44 +10,85 @@
 
     <ScrollView>
 
-        <VerticalStackLayout
-            Padding="24"
-            Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
             <Label
-                FontSize="32"
+        FontSize="28"
+        FontAttributes="Bold"
+        Text="Dashboard"/>
+
+            <Border Padding="16">
+
+                <VerticalStackLayout>
+
+                    <Label Text="Total Notes"/>
+
+                    <Label
+                FontSize="26"
                 FontAttributes="Bold"
-                Text="{Binding Greeting}" />
-
-            <Label
-                FontSize="22"
-                Text="{Binding UserName}" />
-
-            <Border
-                Padding="20"
-                BackgroundColor="{StaticResource CardBackgroundColor}"
-                Stroke="{StaticResource BorderColor}"
-                StrokeThickness="1">
-
-                <VerticalStackLayout
-                    Spacing="8">
-
-                    <Label
-                        FontSize="14"
-                        Text="Today's Goal" />
-
-                    <Label
-                        FontSize="22"
-                        FontAttributes="Bold"
-                        Text="{Binding TodayGoal}" />
+                Text="{Binding TotalNotes}"/>
 
                 </VerticalStackLayout>
 
             </Border>
 
-            <Button
-                Text="Continue"
-                Command="{Binding StartCommand}" />
+            <Border Padding="16">
+
+                <VerticalStackLayout>
+
+                    <Label Text="Favorites"/>
+
+                    <Label
+                FontSize="26"
+                FontAttributes="Bold"
+                Text="{Binding FavoriteNotes}"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <Border Padding="16">
+
+                <VerticalStackLayout>
+
+                    <Label Text="Pinned"/>
+
+                    <Label
+                FontSize="26"
+                FontAttributes="Bold"
+                Text="{Binding PinnedNotes}"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <CollectionView ItemsSource="{Binding RecentNotes}">
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Border Padding="12">
+
+                            <VerticalStackLayout>
+
+                                <Label
+                            FontAttributes="Bold"
+                            Text="{Binding Title}"/>
+
+                                <Label
+                            FontSize="12"
+                            Text="{Binding Description}"/>
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
 
         </VerticalStackLayout>
 

@@ -13,4 +13,12 @@ public interface INoteRepository
     Task<int> UpdateAsync(Note note);
 
     Task<int> DeleteAsync(Guid id);
+
+    Task<int> GetTotalCountAsync();
+
+    Task<int> GetFavoriteCountAsync();
+
+    Task<int> GetPinnedCountAsync();
+
+    Task<List<Note>> GetRecentAsync(int count);
 }

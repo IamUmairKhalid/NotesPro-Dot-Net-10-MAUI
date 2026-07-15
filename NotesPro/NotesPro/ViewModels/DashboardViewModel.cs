@@ -1,56 +1,62 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NotesPro.Models;
 using NotesPro.Services.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace NotesPro.ViewModels;
 
 public partial class DashboardViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigationService;
-    private readonly IDialogService _dialogService;
+    private readonly IDashboardService _dashboardService;
 
     [ObservableProperty]
-    private string greeting;
+    private int totalNotes;
 
     [ObservableProperty]
-    private string userName;
+    private int favoriteNotes;
 
     [ObservableProperty]
-    private string todayGoal;
+    private int pinnedNotes;
+
+    public ObservableCollection<Note> RecentNotes { get; } = new();
 
     public DashboardViewModel(
+        IDashboardService dashboardService,
         INavigationService navigationService,
         IDialogService dialogService)
     {
-        _navigationService = navigationService;
-        _dialogService = dialogService;
+        _dashboardService = dashboardService;
 
         Title = "Dashboard";
-
-        Greeting = GetGreeting();
-
-        UserName = "Developer";
-
-        TodayGoal = ".NET MAUI Production App";
-    }
-
-    private static string GetGreeting()
-    {
-        var hour = DateTime.Now.Hour;
-
-        return hour switch
-        {
-            < 12 => "Good Morning",
-            < 17 => "Good Afternoon",
-            _ => "Good Evening"
-        };
     }
 
     [RelayCommand]
-    private async Task StartAsync()
+    public async Task LoadAsync()
     {
-        await _dialogService.ShowAlertAsync(
-            "NotesPro",
-            "Architecture is ready.");
+        if (IsBusy)
+            return;
+
+        IsBusy = true;
+
+        try
+        {
+            TotalNotes = await _dashboardService.GetTotalNotesAsync();
+
+            FavoriteNotes = await _dashboardService.GetFavoriteNotesAsync();
+
+            PinnedNotes = await _dashboardService.GetPinnedNotesAsync();
+
+            RecentNotes.Clear();
+
+            var notes = await _dashboardService.GetRecentNotesAsync();
+
+            foreach (var note in notes)
+                RecentNotes.Add(note);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

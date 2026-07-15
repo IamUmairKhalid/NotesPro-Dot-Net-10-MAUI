@@ -42,6 +42,8 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<IDataSeeder, DatabaseSeeder>();
 
+        builder.Services.AddSingleton<IDashboardService, DashboardService>();
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
