@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using NotesPro.ViewModels;
 using NotesPro.Views;
 
 namespace NotesPro;
@@ -21,6 +22,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<DashboardPage>();
+        builder.Services.AddSingleton<DashboardViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

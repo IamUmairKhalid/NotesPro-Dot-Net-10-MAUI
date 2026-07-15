@@ -4,6 +4,8 @@
     x:Class="NotesPro.Views.DashboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:NotesPro.ViewModels"
+    x:DataType="viewModels:DashboardViewModel"
     Title="Dashboard">
 
     <ScrollView>
@@ -13,13 +15,13 @@
             Spacing="20">
 
             <Label
-                FontSize="34"
+                FontSize="32"
                 FontAttributes="Bold"
-                Text="👋 Welcome" />
+                Text="{Binding Greeting}" />
 
             <Label
-                FontSize="18"
-                Text="Let's build NotesPro." />
+                FontSize="22"
+                Text="{Binding UserName}" />
 
             <Border
                 Padding="20"
@@ -27,22 +29,25 @@
                 Stroke="{StaticResource BorderColor}"
                 StrokeThickness="1">
 
-                <VerticalStackLayout>
+                <VerticalStackLayout
+                    Spacing="8">
 
                     <Label
-                        FontSize="16"
+                        FontSize="14"
                         Text="Today's Goal" />
 
                     <Label
-                        FontSize="24"
+                        FontSize="22"
                         FontAttributes="Bold"
-                        Text="Build a Production MAUI App" />
+                        Text="{Binding TodayGoal}" />
 
                 </VerticalStackLayout>
 
             </Border>
 
-            <Button Text="Get Started"/>
+            <Button
+                Text="Continue"
+                Command="{Binding StartCommand}" />
 
         </VerticalStackLayout>
 
