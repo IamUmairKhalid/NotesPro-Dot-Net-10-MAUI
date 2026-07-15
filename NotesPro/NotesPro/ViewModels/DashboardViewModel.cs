@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NotesPro.Services.Interfaces;
 
 namespace NotesPro.ViewModels;
 
 public partial class DashboardViewModel : BaseViewModel
 {
+    private readonly INavigationService _navigationService;
+    private readonly IDialogService _dialogService;
+
     [ObservableProperty]
     private string greeting;
 
@@ -14,13 +18,18 @@ public partial class DashboardViewModel : BaseViewModel
     [ObservableProperty]
     private string todayGoal;
 
-    public DashboardViewModel()
+    public DashboardViewModel(
+        INavigationService navigationService,
+        IDialogService dialogService)
     {
+        _navigationService = navigationService;
+        _dialogService = dialogService;
+
         Title = "Dashboard";
 
         Greeting = GetGreeting();
 
-        userName = "Developer";
+        UserName = "Developer";
 
         TodayGoal = ".NET MAUI Production App";
     }
@@ -38,8 +47,10 @@ public partial class DashboardViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void Start()
+    private async Task StartAsync()
     {
-        // Navigation will be implemented in Step 4.
+        await _dialogService.ShowAlertAsync(
+            "NotesPro",
+            "Architecture is ready.");
     }
 }
