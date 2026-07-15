@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="NotesPro.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Dashboard">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="24"
+            Spacing="20">
+
+            <Label
+                FontSize="34"
+                FontAttributes="Bold"
+                Text="👋 Welcome" />
+
+            <Label
+                FontSize="18"
+                Text="Let's build NotesPro." />
+
+            <Border
+                Padding="20"
+                BackgroundColor="{StaticResource CardBackgroundColor}"
+                Stroke="{StaticResource BorderColor}"
+                StrokeThickness="1">
+
+                <VerticalStackLayout>
+
+                    <Label
+                        FontSize="16"
+                        Text="Today's Goal" />
+
+                    <Label
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        Text="Build a Production MAUI App" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <Button Text="Get Started"/>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

@@ -28,6 +28,23 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
+    <!-- Brand -->
+    <Color x:Key="PrimaryColor">#6750A4</Color>
+    <Color x:Key="PrimaryDarkColor">#4F378B</Color>
+
+    <!-- Background -->
+    <Color x:Key="PageBackgroundColor">#F8F9FA</Color>
+
+    <!-- Cards -->
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+
+    <!-- Text -->
+    <Color x:Key="PrimaryTextColor">#1C1B1F</Color>
+    <Color x:Key="SecondaryTextColor">#6C757D</Color>
+
+    <!-- Divider -->
+    <Color x:Key="BorderColor">#E5E7EB</Color>
+
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
