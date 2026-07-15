@@ -13,8 +13,20 @@
 
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
 
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Typography.xaml"/>
 
+                <ResourceDictionary Source="Resources/Styles/Spacing.xaml"/>
+
+                <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
+
+                <ResourceDictionary Source="Resources/Styles/Cards.xaml"/>
+
+                <ResourceDictionary Source="Resources/Styles/Entries.xaml"/>
+
+                <ResourceDictionary Source="Resources/Styles/CollectionView.xaml"/>
+
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
+                
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

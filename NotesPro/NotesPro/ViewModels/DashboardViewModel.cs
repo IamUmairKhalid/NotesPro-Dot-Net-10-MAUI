@@ -19,6 +19,15 @@ public partial class DashboardViewModel : BaseViewModel
     [ObservableProperty]
     private int pinnedNotes;
 
+    [ObservableProperty]
+    private string greeting = string.Empty;
+
+    [ObservableProperty]
+    private string userName = "Developer";
+
+    [ObservableProperty]
+    private string todayDate = string.Empty;
+
     public ObservableCollection<Note> RecentNotes { get; } = new();
 
     public DashboardViewModel(
@@ -29,6 +38,8 @@ public partial class DashboardViewModel : BaseViewModel
         _dashboardService = dashboardService;
 
         Title = "Dashboard";
+        Greeting = GetGreeting();
+        TodayDate = DateTime.Now.ToString("dddd, dd MMMM yyyy");
     }
 
     [RelayCommand]
@@ -58,5 +69,18 @@ public partial class DashboardViewModel : BaseViewModel
         {
             IsBusy = false;
         }
+    }
+
+    private static string GetGreeting()
+    {
+        var hour = DateTime.Now.Hour;
+
+        if (hour < 12)
+            return "Good Morning";
+
+        if (hour < 17)
+            return "Good Afternoon";
+
+        return "Good Evening";
     }
 }

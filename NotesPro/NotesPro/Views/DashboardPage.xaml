@@ -5,93 +5,107 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:NotesPro.ViewModels"
+    xmlns:controls="clr-namespace:NotesPro.Controls"
     x:DataType="viewModels:DashboardViewModel"
-    Title="Dashboard">
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource Background}">
 
-    <ScrollView>
+    <RefreshView
+        IsRefreshing="{Binding IsBusy}"
+        Command="{Binding LoadCommand}">
 
-        <VerticalStackLayout Padding="20" Spacing="16">
+        <ScrollView>
 
-            <Label
-        FontSize="28"
-        FontAttributes="Bold"
-        Text="Dashboard"/>
+            <VerticalStackLayout
+                Padding="{StaticResource Space20}"
+                Spacing="{StaticResource Space20}">
 
-            <Border Padding="16">
+                <!-- Header -->
 
-                <VerticalStackLayout>
-
-                    <Label Text="Total Notes"/>
+                <VerticalStackLayout
+                    Spacing="{StaticResource Space4}">
 
                     <Label
-                FontSize="26"
-                FontAttributes="Bold"
-                Text="{Binding TotalNotes}"/>
+                        Style="{StaticResource DisplayLarge}"
+                        Text="{Binding Greeting}" />
+
+                    <Label
+                        Style="{StaticResource BodyMedium}"
+                        Text="Welcome back," />
+
+                    <Label
+                        Style="{StaticResource HeadlineMedium}"
+                        Text="{Binding UserName}" />
+
+                    <Label
+                        Style="{StaticResource BodySmall}"
+                        Text="{Binding TodayDate}"
+                        TextColor="{StaticResource Secondary}" />
 
                 </VerticalStackLayout>
 
-            </Border>
+                <!-- Search -->
 
-            <Border Padding="16">
+                <controls:SearchBarView
+                    Placeholder="Search notes..." />
 
-                <VerticalStackLayout>
+                <!-- Statistics -->
 
-                    <Label Text="Favorites"/>
+                <Grid
+                    ColumnDefinitions="*,*,*"
+                    ColumnSpacing="{StaticResource Space12}">
 
-                    <Label
-                FontSize="26"
-                FontAttributes="Bold"
-                Text="{Binding FavoriteNotes}"/>
+                    <controls:StatisticCard
+                        Grid.Column="0"
+                        Icon="📝"
+                        Title="Notes"
+                        Value="{Binding TotalNotes}" />
 
-                </VerticalStackLayout>
+                    <controls:StatisticCard
+                        Grid.Column="1"
+                        Icon="⭐"
+                        Title="Favorites"
+                        Value="{Binding FavoriteNotes}" />
 
-            </Border>
+                    <controls:StatisticCard
+                        Grid.Column="2"
+                        Icon="📌"
+                        Title="Pinned"
+                        Value="{Binding PinnedNotes}" />
 
-            <Border Padding="16">
+                </Grid>
 
-                <VerticalStackLayout>
+                <!-- Recent Notes -->
 
-                    <Label Text="Pinned"/>
+                <Label
+                    Style="{StaticResource TitleLarge}"
+                    Text="Recent Notes" />
 
-                    <Label
-                FontSize="26"
-                FontAttributes="Bold"
-                Text="{Binding PinnedNotes}"/>
+                <CollectionView
+                    ItemsSource="{Binding RecentNotes}"
+                    SelectionMode="None">
 
-                </VerticalStackLayout>
+                    <CollectionView.ItemTemplate>
 
-            </Border>
+                        <DataTemplate>
 
-            <CollectionView ItemsSource="{Binding RecentNotes}">
+                            <controls:NoteCard
+                                Title="{Binding Title}"
+                                Description="{Binding Description}"
+                                Date="{Binding CreatedOn, StringFormat='{0:dd MMM yyyy}'}"
+                                IsPinned="{Binding IsPinned}"
+                                IsFavorite="{Binding IsFavorite}" />
 
-                <CollectionView.ItemTemplate>
+                        </DataTemplate>
 
-                    <DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-                        <Border Padding="12">
+                </CollectionView>
 
-                            <VerticalStackLayout>
+            </VerticalStackLayout>
 
-                                <Label
-                            FontAttributes="Bold"
-                            Text="{Binding Title}"/>
+        </ScrollView>
 
-                                <Label
-                            FontSize="12"
-                            Text="{Binding Description}"/>
-
-                            </VerticalStackLayout>
-
-                        </Border>
-
-                    </DataTemplate>
-
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-
-        </VerticalStackLayout>
-
-    </ScrollView>
+    </RefreshView>
 
 </ContentPage>

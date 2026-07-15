@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="NotesPro.Controls.PrimaryButton"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <Grid>
+
+        <Button
+            HeightRequest="56"
+            CornerRadius="16"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource OnPrimary}"
+            FontFamily="OpenSansSemibold"
+            FontSize="16"
+            Text="{Binding Text, Source={x:Reference Root}}"
+            Command="{Binding Command, Source={x:Reference Root}}"
+            IsEnabled="{Binding IsButtonEnabled, Source={x:Reference Root}}" />
+
+        <ActivityIndicator
+            IsRunning="{Binding IsLoading, Source={x:Reference Root}}"
+            IsVisible="{Binding IsLoading, Source={x:Reference Root}}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Color="{StaticResource OnPrimary}" />
+
+    </Grid>
+
+</ContentView>

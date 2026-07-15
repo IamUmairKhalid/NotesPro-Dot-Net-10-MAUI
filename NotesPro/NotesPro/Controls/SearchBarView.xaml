@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="NotesPro.Controls.SearchBarView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <Border
+        Padding="{StaticResource Space12}"
+        BackgroundColor="{StaticResource SearchBackground}"
+        Stroke="{StaticResource Outline}"
+        StrokeThickness="1">
+
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="{StaticResource RadiusLarge}" />
+        </Border.StrokeShape>
+
+        <Grid
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="{StaticResource Space8}">
+
+            <Label
+                Grid.Column="0"
+                VerticalOptions="Center"
+                FontSize="18"
+                Text="🔍" />
+
+            <Entry
+                Grid.Column="1"
+                BackgroundColor="Transparent"
+                Placeholder="{Binding Placeholder, Source={x:Reference Root}}"
+                Text="{Binding Text,
+                               Source={x:Reference Root},
+                               Mode=TwoWay}" />
+
+            <Button
+                Grid.Column="2"
+                WidthRequest="32"
+                HeightRequest="32"
+                Padding="0"
+                FontSize="14"
+                CornerRadius="16"
+                BackgroundColor="Transparent"
+                Text="✕"
+                Command="{Binding ClearCommand,
+                                  Source={x:Reference Root}}" />
+
+        </Grid>
+
+    </Border>
+
+</ContentView>
