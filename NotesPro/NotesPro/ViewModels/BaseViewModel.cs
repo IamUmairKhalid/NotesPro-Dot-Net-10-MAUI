@@ -8,5 +8,8 @@ public partial class BaseViewModel : ObservableObject
     private bool isBusy;
 
     [ObservableProperty]
+    private bool isRefreshing;
+
+    [ObservableProperty]
     private string title = string.Empty;
 }

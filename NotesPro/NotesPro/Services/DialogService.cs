@@ -14,4 +14,17 @@ public class DialogService : IDialogService
             message,
             cancel);
     }
+
+    public async Task<bool> ShowConfirmationAsync(
+        string title,
+        string message,
+        string accept = "Delete",
+        string cancel = "Cancel")
+    {
+        return await Shell.Current.DisplayAlert(
+            title,
+            message,
+            accept,
+            cancel);
+    }
 }

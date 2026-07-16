@@ -21,4 +21,11 @@ public partial class DashboardPage : ContentPage
 
         await _viewModel.LoadAsync();
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        _viewModel.SearchText = string.Empty;
+    }
 }

@@ -26,7 +26,8 @@ public partial class StatisticCard : ContentView
             nameof(Icon),
             typeof(string),
             typeof(StatisticCard),
-            string.Empty);
+            string.Empty,
+            propertyChanged: OnIconChanged);
 
     public string Title
     {
@@ -44,5 +45,21 @@ public partial class StatisticCard : ContentView
     {
         get => (string)GetValue(IconProperty);
         set => SetValue(IconProperty, value);
+    }
+
+    public bool IsNotesIcon => Icon.Equals("Notes", StringComparison.OrdinalIgnoreCase);
+
+    public bool IsFavoritesIcon => Icon.Equals("Favorites", StringComparison.OrdinalIgnoreCase);
+
+    public bool IsPinnedIcon => Icon.Equals("Pinned", StringComparison.OrdinalIgnoreCase);
+
+    private static void OnIconChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not StatisticCard card)
+            return;
+
+        card.OnPropertyChanged(nameof(IsNotesIcon));
+        card.OnPropertyChanged(nameof(IsFavoritesIcon));
+        card.OnPropertyChanged(nameof(IsPinnedIcon));
     }
 }

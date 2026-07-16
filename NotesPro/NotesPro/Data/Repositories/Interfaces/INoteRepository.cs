@@ -10,7 +10,7 @@ public interface INoteRepository
 
     Task<int> AddAsync(Note note);
 
-    Task<int> UpdateAsync(Note note);
+    Task<int> UpdateAsync(Note note, bool updateTimestamp = true);
 
     Task<int> DeleteAsync(Guid id);
 

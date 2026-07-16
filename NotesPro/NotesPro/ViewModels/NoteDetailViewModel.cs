@@ -165,6 +165,13 @@ public partial class NoteDetailViewModel : BaseViewModel
         if (_currentNote == null)
             return;
 
+        var shouldDelete = await _dialogService.ShowConfirmationAsync(
+            "Delete note?",
+            $"Delete \"{_currentNote.Title}\"? This cannot be undone.");
+
+        if (!shouldDelete)
+            return;
+
         IsBusy = true;
         try
         {
@@ -182,15 +189,27 @@ public partial class NoteDetailViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void TogglePin()
+    private async Task TogglePinAsync()
     {
         IsPinned = !IsPinned;
+
+        if (IsEditMode && _currentNote != null)
+        {
+            _currentNote.IsPinned = IsPinned;
+            await _noteRepository.UpdateAsync(_currentNote, updateTimestamp: false);
+        }
     }
 
     [RelayCommand]
-    private void ToggleFavorite()
+    private async Task ToggleFavoriteAsync()
     {
         IsFavorite = !IsFavorite;
+
+        if (IsEditMode && _currentNote != null)
+        {
+            _currentNote.IsFavorite = IsFavorite;
+            await _noteRepository.UpdateAsync(_currentNote, updateTimestamp: false);
+        }
     }
 
     [RelayCommand]

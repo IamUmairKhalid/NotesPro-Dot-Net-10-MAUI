@@ -18,11 +18,14 @@ public class NoteRepository : INoteRepository
         await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
-        return await db.Table<Note>()
+        var notes = await db.Table<Note>()
             .Where(x => !x.IsDeleted)
-            .OrderByDescending(x => x.IsPinned)
-            .ThenByDescending(x => x.CreatedOn)
             .ToListAsync();
+
+        return notes
+            .OrderByDescending(x => x.IsPinned)
+            .ThenByDescending(x => x.UpdatedOn ?? x.CreatedOn)
+            .ToList();
     }
 
     public async Task<Note?> GetByIdAsync(Guid id)
@@ -44,12 +47,13 @@ public class NoteRepository : INoteRepository
         return await db.InsertAsync(note);
     }
 
-    public async Task<int> UpdateAsync(Note note)
+    public async Task<int> UpdateAsync(Note note, bool updateTimestamp = true)
     {
         await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
-        note.UpdatedOn = DateTime.UtcNow;
+        if (updateTimestamp)
+            note.UpdatedOn = DateTime.UtcNow;
 
         return await db.UpdateAsync(note);
     }
@@ -106,10 +110,14 @@ public class NoteRepository : INoteRepository
         await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
-        return await db.Table<Note>()
+        var notes = await db.Table<Note>()
             .Where(x => !x.IsDeleted)
-            .OrderByDescending(x => x.CreatedOn)
-            .Take(count)
             .ToListAsync();
+
+        return notes
+            .OrderByDescending(x => x.IsPinned)
+            .ThenByDescending(x => x.UpdatedOn ?? x.CreatedOn)
+            .Take(count)
+            .ToList();
     }
 }

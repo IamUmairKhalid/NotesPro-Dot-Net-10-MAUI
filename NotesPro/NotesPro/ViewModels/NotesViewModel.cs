@@ -20,6 +20,9 @@ public partial class NotesViewModel : BaseViewModel
     [ObservableProperty]
     private string searchText = string.Empty;
 
+    [ObservableProperty]
+    private Note? selectedNote;
+
     public ObservableCollection<Note> Notes { get; } = new();
 
     public NotesViewModel(
@@ -53,6 +56,7 @@ public partial class NotesViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
+            IsRefreshing = false;
         }
     }
 
@@ -68,7 +72,23 @@ public partial class NotesViewModel : BaseViewModel
         if (note == null)
             return;
 
-        await _navigationService.GoToAsync($"NoteDetailPage?NoteId={note.Id}");
+        try
+        {
+            await _navigationService.GoToAsync($"NoteDetailPage?NoteId={note.Id}");
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowAlertAsync("Navigation Error", $"Unable to open note: {ex.Message}");
+        }
+    }
+
+    partial void OnSelectedNoteChanged(Note? value)
+    {
+        if (value == null)
+            return;
+
+        SelectedNote = null;
+        SelectNoteCommand.Execute(value);
     }
 
     [RelayCommand]
@@ -78,7 +98,7 @@ public partial class NotesViewModel : BaseViewModel
             return;
 
         note.IsPinned = !note.IsPinned;
-        await _noteRepository.UpdateAsync(note);
+        await _noteRepository.UpdateAsync(note, updateTimestamp: false);
         await LoadAsync();
     }
 
@@ -89,7 +109,7 @@ public partial class NotesViewModel : BaseViewModel
             return;
 
         note.IsFavorite = !note.IsFavorite;
-        await _noteRepository.UpdateAsync(note);
+        await _noteRepository.UpdateAsync(note, updateTimestamp: false);
         await LoadAsync();
     }
 
@@ -97,6 +117,13 @@ public partial class NotesViewModel : BaseViewModel
     private async Task DeleteNoteAsync(Note note)
     {
         if (note == null)
+            return;
+
+        var shouldDelete = await _dialogService.ShowConfirmationAsync(
+            "Delete note?",
+            $"Delete \"{note.Title}\"? This cannot be undone.");
+
+        if (!shouldDelete)
             return;
 
         await _noteRepository.DeleteAsync(note.Id);

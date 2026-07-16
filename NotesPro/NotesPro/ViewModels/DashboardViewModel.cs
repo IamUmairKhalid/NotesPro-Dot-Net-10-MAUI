@@ -10,6 +10,8 @@ public partial class DashboardViewModel : BaseViewModel
 {
     private readonly IDashboardService _dashboardService;
     private readonly INavigationService _navigationService;
+    private readonly IDialogService _dialogService;
+    private List<Note> _allNotes = new();
 
     [ObservableProperty]
     private int totalNotes;
@@ -29,6 +31,12 @@ public partial class DashboardViewModel : BaseViewModel
     [ObservableProperty]
     private string todayDate = string.Empty;
 
+    [ObservableProperty]
+    private string searchText = string.Empty;
+
+    [ObservableProperty]
+    private Note? selectedNote;
+
     public ObservableCollection<Note> RecentNotes { get; } = new();
 
     public DashboardViewModel(
@@ -38,6 +46,7 @@ public partial class DashboardViewModel : BaseViewModel
     {
         _dashboardService = dashboardService;
         _navigationService = navigationService;
+        _dialogService = dialogService;
 
         Title = "Dashboard";
         Greeting = GetGreeting();
@@ -50,7 +59,23 @@ public partial class DashboardViewModel : BaseViewModel
         if (note == null)
             return;
 
-        await _navigationService.GoToAsync($"NoteDetailPage?NoteId={note.Id}");
+        try
+        {
+            await _navigationService.GoToAsync($"NoteDetailPage?NoteId={note.Id}");
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowAlertAsync("Navigation Error", $"Unable to open note: {ex.Message}");
+        }
+    }
+
+    partial void OnSelectedNoteChanged(Note? value)
+    {
+        if (value == null)
+            return;
+
+        SelectedNote = null;
+        SelectNoteCommand.Execute(value);
     }
 
     [RelayCommand]
@@ -69,16 +94,44 @@ public partial class DashboardViewModel : BaseViewModel
 
             PinnedNotes = await _dashboardService.GetPinnedNotesAsync();
 
-            RecentNotes.Clear();
-
-            var notes = await _dashboardService.GetRecentNotesAsync();
-
-            foreach (var note in notes)
-                RecentNotes.Add(note);
+            _allNotes = await _dashboardService.GetRecentNotesAsync();
+            ApplyFilter();
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowAlertAsync("Error", $"Failed to load dashboard: {ex.Message}");
         }
         finally
         {
             IsBusy = false;
+            IsRefreshing = false;
+        }
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        RecentNotes.Clear();
+
+        IEnumerable<Note> filtered = _allNotes;
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            var cleanQuery = SearchText.Trim().ToLowerInvariant();
+            filtered = filtered.Where(note =>
+                note.Title.ToLowerInvariant().Contains(cleanQuery) ||
+                note.Description.ToLowerInvariant().Contains(cleanQuery));
+        }
+
+        foreach (var note in filtered
+            .OrderByDescending(note => note.IsPinned)
+            .ThenByDescending(note => note.UpdatedOn ?? note.CreatedOn))
+        {
+            RecentNotes.Add(note);
         }
     }
 

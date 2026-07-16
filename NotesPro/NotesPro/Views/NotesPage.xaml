@@ -9,11 +9,12 @@
     xmlns:models="clr-namespace:NotesPro.Models"
     x:DataType="viewModels:NotesViewModel"
     Title="Notes"
+    x:Name="PageRoot"
     Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource Background}">
 
     <RefreshView
-        IsRefreshing="{Binding IsBusy}"
+        IsRefreshing="{Binding IsRefreshing}"
         Command="{Binding LoadCommand}">
 
         <Grid
@@ -136,20 +137,20 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Delete"
                                                BackgroundColor="{StaticResource Danger}"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=DeleteNoteCommand}"
-                                               CommandParameter="{Binding .}" />
+                                               CommandParameter="{Binding .}"
+                                               Invoked="OnDeleteSwipeInvoked" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <SwipeView.LeftItems>
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Pin"
                                                BackgroundColor="{StaticResource Primary}"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=TogglePinCommand}"
-                                               CommandParameter="{Binding .}" />
+                                               CommandParameter="{Binding .}"
+                                               Invoked="OnPinSwipeInvoked" />
                                     <SwipeItem Text="Favorite"
                                                BackgroundColor="{StaticResource Warning}"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=ToggleFavoriteCommand}"
-                                               CommandParameter="{Binding .}" />
+                                               CommandParameter="{Binding .}"
+                                               Invoked="OnFavoriteSwipeInvoked" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
 
@@ -161,8 +162,8 @@
                                 IsFavorite="{Binding IsFavorite}">
                                 <controls:NoteCard.GestureRecognizers>
                                     <TapGestureRecognizer
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=SelectNoteCommand}"
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding .}"
+                                        Tapped="OnNoteCardTapped" />
                                 </controls:NoteCard.GestureRecognizers>
                             </controls:NoteCard>
                         </SwipeView>
