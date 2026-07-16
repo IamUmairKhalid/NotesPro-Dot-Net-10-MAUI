@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="NotesPro.Views.NotesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:NotesPro.ViewModels"
+    xmlns:controls="clr-namespace:NotesPro.Controls"
+    xmlns:models="clr-namespace:NotesPro.Models"
+    x:DataType="viewModels:NotesViewModel"
+    Title="Notes"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource Background}">
+
+    <RefreshView
+        IsRefreshing="{Binding IsBusy}"
+        Command="{Binding LoadCommand}">
+
+        <Grid
+            Padding="{StaticResource Space20}"
+            RowDefinitions="Auto,Auto,Auto,*">
+
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="{StaticResource Space12}"
+                Margin="0,0,0,16">
+
+                <Border
+                    Grid.Column="0"
+                    WidthRequest="42"
+                    HeightRequest="42"
+                    BackgroundColor="{StaticResource Primary}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M17,15H7V13H17V15M17,11H7V9H17V11M14,7H7V5H14V7Z"
+                        Fill="{StaticResource OnPrimaryBrush}"
+                        WidthRequest="22"
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="0"
+                    VerticalOptions="Center">
+                    <Label
+                        FontFamily="OpenSansSemibold"
+                        FontSize="20"
+                        Text="NotesPro"
+                        TextColor="{StaticResource Primary}" />
+                    <Label
+                        Style="{StaticResource BodySmall}"
+                        Text="Your notes, sorted and ready"
+                        TextColor="{StaticResource Secondary}" />
+                </VerticalStackLayout>
+
+                <Label
+                    Grid.Column="2"
+                    Style="{StaticResource BodyMedium}"
+                    Text="{Binding TotalNotes,StringFormat='{}{0} Notes'}"
+                    TextColor="{StaticResource Secondary}"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <controls:SearchBarView
+                Grid.Row="1"
+                Placeholder="Search notes..."
+                Text="{Binding SearchText}" />
+
+            <Label
+                Grid.Row="2"
+                Margin="0,20,0,12"
+                Style="{StaticResource HeadlineMedium}"
+                Text="All Notes" />
+
+            <CollectionView
+                Grid.Row="3"
+                ItemsSource="{Binding Notes}"
+                SelectionMode="None">
+
+                <CollectionView.EmptyView>
+
+                    <VerticalStackLayout
+                        Padding="40"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="{StaticResource Space12}">
+
+                        <Border
+                            WidthRequest="72"
+                            HeightRequest="72"
+                            BackgroundColor="{StaticResource PrimaryContainer}"
+                            StrokeThickness="0"
+                            HorizontalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Path
+                                Aspect="Uniform"
+                                Data="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M17,15H7V13H17V15M17,11H7V9H17V11M14,7H7V5H14V7Z"
+                                Fill="{StaticResource PrimaryBrush}"
+                                WidthRequest="38"
+                                HeightRequest="38"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+
+                        <Label
+                            Style="{StaticResource TitleLarge}"
+                            HorizontalOptions="Center"
+                            Text="No Notes Found" />
+
+                        <Label
+                            Style="{StaticResource BodyMedium}"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="Tap the add button to create your first note." />
+
+                    </VerticalStackLayout>
+
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="models:Note">
+
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="{StaticResource Danger}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=DeleteNoteCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Pin"
+                                               BackgroundColor="{StaticResource Primary}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=TogglePinCommand}"
+                                               CommandParameter="{Binding .}" />
+                                    <SwipeItem Text="Favorite"
+                                               BackgroundColor="{StaticResource Warning}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=ToggleFavoriteCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <controls:NoteCard
+                                Title="{Binding Title}"
+                                Description="{Binding Description}"
+                                Date="{Binding CreatedOn,StringFormat='{}{0:dd MMM yyyy}'}"
+                                IsPinned="{Binding IsPinned}"
+                                IsFavorite="{Binding IsFavorite}">
+                                <controls:NoteCard.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NotesViewModel}}, Path=SelectNoteCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </controls:NoteCard.GestureRecognizers>
+                            </controls:NoteCard>
+                        </SwipeView>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <Border
+                Grid.Row="3"
+                HeightRequest="56"
+                WidthRequest="56"
+                BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="16"
+                ZIndex="10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="28" />
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddNoteCommand}" />
+                </Border.GestureRecognizers>
+                <Path
+                    Aspect="Uniform"
+                    Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                    Fill="{StaticResource OnPrimaryBrush}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="26"
+                    HeightRequest="26" />
+            </Border>
+
+        </Grid>
+
+    </RefreshView>
+
+</ContentPage>

@@ -9,6 +9,10 @@ public partial class SearchBarView : ContentView
         InitializeComponent();
 
         ClearCommand = new Command(() => Text = string.Empty);
+        ClearButton.GestureRecognizers.Add(new TapGestureRecognizer
+        {
+            Command = ClearCommand
+        });
     }
 
     public static readonly BindableProperty TextProperty =

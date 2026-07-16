@@ -1,4 +1,4 @@
-﻿using NotesPro.Data.Seed;
+using NotesPro.Data.Seed;
 using NotesPro.Models;
 using NotesPro.Services.Interfaces;
 
@@ -19,12 +19,22 @@ public class DatabaseInitializer : IDatabaseInitializer
 
     public async Task InitializeAsync()
     {
-        var connection = await _database.GetConnectionAsync();
+        try
+        {
+            var connection = await _database.GetConnectionAsync();
 
-        await connection.CreateTableAsync<Category>();
+            await connection.CreateTableAsync<Category>();
 
-        await connection.CreateTableAsync<Note>();
+            await connection.CreateTableAsync<Note>();
 
-        await _dataSeeder.SeedAsync();
+            _database.MarkInitialized();
+
+            await _dataSeeder.SeedAsync();
+        }
+        catch (Exception)
+        {
+            _database.MarkInitialized();
+            throw;
+        }
     }
 }

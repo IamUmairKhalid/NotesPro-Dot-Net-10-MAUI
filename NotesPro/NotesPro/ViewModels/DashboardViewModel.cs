@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NotesPro.Models;
 using NotesPro.Services.Interfaces;
@@ -9,6 +9,7 @@ namespace NotesPro.ViewModels;
 public partial class DashboardViewModel : BaseViewModel
 {
     private readonly IDashboardService _dashboardService;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private int totalNotes;
@@ -36,10 +37,20 @@ public partial class DashboardViewModel : BaseViewModel
         IDialogService dialogService)
     {
         _dashboardService = dashboardService;
+        _navigationService = navigationService;
 
         Title = "Dashboard";
         Greeting = GetGreeting();
         TodayDate = DateTime.Now.ToString("dddd, dd MMMM yyyy");
+    }
+
+    [RelayCommand]
+    private async Task SelectNoteAsync(Note note)
+    {
+        if (note == null)
+            return;
+
+        await _navigationService.GoToAsync($"NoteDetailPage?NoteId={note.Id}");
     }
 
     [RelayCommand]

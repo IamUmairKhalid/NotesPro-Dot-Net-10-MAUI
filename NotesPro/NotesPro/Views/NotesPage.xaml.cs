@@ -1,0 +1,24 @@
+using NotesPro.ViewModels;
+
+namespace NotesPro.Views;
+
+public partial class NotesPage : ContentPage
+{
+    private readonly NotesViewModel _viewModel;
+
+    public NotesPage(NotesViewModel viewModel)
+    {
+        InitializeComponent();
+
+        BindingContext = viewModel;
+
+        _viewModel = viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await _viewModel.LoadAsync();
+    }
+}

@@ -1,4 +1,4 @@
-﻿using NotesPro.Data.Database;
+using NotesPro.Data.Database;
 using NotesPro.Data.Repositories.Interfaces;
 using NotesPro.Models;
 
@@ -15,6 +15,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<List<Category>> GetAllAsync()
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Category>()
@@ -24,6 +25,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category?> GetByIdAsync(Guid id)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Category>()
@@ -32,6 +34,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<int> AddAsync(Category category)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         category.CreatedOn = DateTime.UtcNow;
@@ -41,6 +44,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<int> UpdateAsync(Category category)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         category.UpdatedOn = DateTime.UtcNow;
@@ -50,6 +54,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<int> DeleteAsync(Guid id)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.DeleteAsync<Category>(id);

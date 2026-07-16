@@ -6,8 +6,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:NotesPro.Views">
 
-    <ShellContent
-        Title="Dashboard"
-        ContentTemplate="{DataTemplate views:DashboardPage}" />
+    <TabBar>
+        <Tab Title="Dashboard">
+            <ShellContent ContentTemplate="{DataTemplate views:DashboardPage}" />
+        </Tab>
+        <Tab Title="Notes">
+            <ShellContent ContentTemplate="{DataTemplate views:NotesPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

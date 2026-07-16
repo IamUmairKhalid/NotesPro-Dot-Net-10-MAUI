@@ -19,9 +19,8 @@
 
         <Grid
             RowDefinitions="Auto,Auto,Auto"
-            ColumnDefinitions="*,Auto">
-
-            <!-- Title -->
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="{StaticResource Space12}">
 
             <Label
                 Grid.Row="0"
@@ -29,16 +28,26 @@
                 Style="{StaticResource TitleMedium}"
                 Text="{Binding Title, Source={x:Reference Root}}" />
 
-            <!-- Pinned -->
-
-            <Label
+            <Border
                 Grid.Row="0"
                 Grid.Column="1"
-                FontSize="16"
-                Text="📌"
-                IsVisible="{Binding IsPinned, Source={x:Reference Root}}" />
-
-            <!-- Description -->
+                WidthRequest="30"
+                HeightRequest="30"
+                BackgroundColor="{StaticResource PrimaryContainer}"
+                StrokeThickness="0"
+                IsVisible="{Binding IsPinned, Source={x:Reference Root}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+                <Path
+                    Aspect="Uniform"
+                    Data="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12M8.8,14L10,12.8V4H14V12.8L15.2,14H8.8Z"
+                    Fill="{StaticResource PrimaryBrush}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="16"
+                    HeightRequest="16" />
+            </Border>
 
             <Label
                 Grid.Row="1"
@@ -48,8 +57,6 @@
                 MaxLines="2"
                 LineBreakMode="TailTruncation"
                 Text="{Binding Description, Source={x:Reference Root}}" />
-
-            <!-- Footer -->
 
             <Grid
                 Grid.Row="2"
@@ -62,10 +69,13 @@
                     Style="{StaticResource Caption}"
                     Text="{Binding Date, Source={x:Reference Root}}" />
 
-                <Label
+                <Path
                     Grid.Column="1"
-                    FontSize="16"
-                    Text="⭐"
+                    Aspect="Uniform"
+                    Data="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
+                    Fill="{StaticResource WarningBrush}"
+                    WidthRequest="18"
+                    HeightRequest="18"
                     IsVisible="{Binding IsFavorite, Source={x:Reference Root}}" />
 
             </Grid>

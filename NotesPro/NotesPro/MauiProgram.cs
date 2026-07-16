@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using NotesPro.ViewModels;
 using NotesPro.Views;
@@ -30,6 +30,12 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<DashboardPage>();
         builder.Services.AddSingleton<DashboardViewModel>();
+
+        builder.Services.AddSingleton<NotesPage>();
+        builder.Services.AddSingleton<NotesViewModel>();
+
+        builder.Services.AddTransient<NoteDetailPage>();
+        builder.Services.AddTransient<NoteDetailViewModel>();
 
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<IDialogService, DialogService>();

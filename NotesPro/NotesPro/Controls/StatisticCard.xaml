@@ -32,11 +32,14 @@
                         <RoundRectangle CornerRadius="21"/>
                     </Border.StrokeShape>
 
-                    <Label
+                    <Path
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
-                        FontSize="18"
-                        Text="{Binding Icon, Source={x:Reference Root}}"/>
+                        Aspect="Uniform"
+                        Data="{Binding Icon, Source={x:Reference Root}}"
+                        Fill="{StaticResource OnPrimaryContainerBrush}"
+                        WidthRequest="20"
+                        HeightRequest="20"/>
 
                 </Border>
 

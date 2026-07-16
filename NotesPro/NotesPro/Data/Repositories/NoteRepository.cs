@@ -1,4 +1,4 @@
-﻿using NotesPro.Data.Database;
+using NotesPro.Data.Database;
 using NotesPro.Data.Repositories.Interfaces;
 using NotesPro.Models;
 
@@ -15,6 +15,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<List<Note>> GetAllAsync()
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
@@ -26,6 +27,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<Note?> GetByIdAsync(Guid id)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
@@ -34,6 +36,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> AddAsync(Note note)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         note.CreatedOn = DateTime.UtcNow;
@@ -43,6 +46,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> UpdateAsync(Note note)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         note.UpdatedOn = DateTime.UtcNow;
@@ -52,6 +56,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> DeleteAsync(Guid id)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         var note = await GetByIdAsync(id);
@@ -68,6 +73,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> GetTotalCountAsync()
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
@@ -77,6 +83,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> GetFavoriteCountAsync()
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
@@ -86,6 +93,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<int> GetPinnedCountAsync()
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
@@ -95,6 +103,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<List<Note>> GetRecentAsync(int count)
     {
+        await _database.DatabaseReady;
         var db = await _database.GetConnectionAsync();
 
         return await db.Table<Note>()
